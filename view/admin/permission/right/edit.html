@@ -4,26 +4,15 @@
     <div class="layui-row">
         <form class="layui-form">
             {:token()}
+            <input type="hidden" name="id" value="{$info.id}">
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>上级</label>
                 <div class="layui-input-inline">
-                    <select id="shipping" name="parent_id" class="valid" lay-verify="required" lay-search>
-                        <option value="0">作为顶级</option>
-                        <option value="1">手动蝶阀</option>
-                        <option value="2">阿达是否</option>
-                        <option value="3">阿斯顿发</option>
-                     </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
-                    <span class="x-red">*</span>上级</label>
-                <div class="layui-input-inline">
-                    <div class="layui-unselect layui-form-select downpanel">
+                    <div id="parent_tree" class="layui-unselect layui-form-select downpanel">
                         <div class="layui-select-title" align="center">
-                            <span class="layui-input layui-unselect" id="treeclass" style="width: 269px;">--请选择--</span>
-                            <input id="pid" type="hidden" name="selectID" value="0">
+                            <span class="layui-input layui-unselect" id="treeclass" style="height: 30px;line-height: 30px;text-align: left">作为顶级</span>
+                            <input id="pid" type="hidden" name="parent_id" value="{$info.parent_id}">
                             <i class="layui-edge"></i>
                         </div>
                         <dl class="layui-anim layui-anim-upbit">
@@ -35,69 +24,80 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>权限名称
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="name" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.name}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>应用
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="module" required="" lay-verify="required|module"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.module}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>控制器
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="controller" required="" lay-verify="required|controller"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.controller}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>方法
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="method" required="" lay-verify="required|method"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.method}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
                     <span class="x-red">*</span>排序
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="sort" required="" lay-verify="required"
-                           autocomplete="off" class="layui-input" value="100">
+                           autocomplete="off" class="layui-input" value="{$info.sort}" >
                 </div>
             </div>
             <div class="layui-form-item">
-                <label for="username" class="layui-form-label">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>是否作为菜单</label>
+                <div class="layui-input-inline">
+                    <select name="is_menu" lay-verify="required">
+                        <option value="1" {if $info.is_menu == 1}selected="selected"{/if}>是</option>
+                        <option value="2" {if $info.is_menu == 2}selected="selected"{/if}>否</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
                     图标
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="icon" required=""
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.icon}">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label for="L_repass" class="layui-form-label">
                 </label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                <button  class="layui-btn" lay-filter="edit" lay-submit="">
                     增加
                 </button>
             </div>
         </form>
     </div>
 </div>
+
 <script>
 layui.use(['element', 'tree', 'layer', 'form', 'upload'],
     function() {
@@ -113,17 +113,16 @@ layui.use(['element', 'tree', 'layer', 'form', 'upload'],
         });
 
         //监听提交
-        form.on('submit(add)',
+        form.on('submit(edit)',
             function(data) {
-                console.log(data);
                 //发异步，把数据提交给php
                 $.ajax({
                     type : 'post',
-                    url  : 'save',
+                    url  : 'update',
                     data : data.field,
                     success : function (result) {
                         if(result.code == 100){
-                            layer.alert("增加成功", {
+                            layer.alert("修改成功", {
                                     icon: 6
                                 },
                                 function() {
@@ -138,14 +137,14 @@ layui.use(['element', 'tree', 'layer', 'form', 'upload'],
                         }
                     },
                     error : function (result) {
-                        layer.alert('请求失败！'.msg,{icon:5});
+                        layer.alert('请求失败！',{icon:5});
                     }
                 });
 
                 return false;
             });
 
-        var $ = layui.jquery, tree = layui.tree;
+        var tree = layui.tree;
         loadMenuTree(tree);
 
         $(".downpanel").on("click", ".layui-select-title", function (e) {
@@ -155,22 +154,42 @@ layui.use(['element', 'tree', 'layer', 'form', 'upload'],
         }).on("click", "dl i", function (e) {
             layui.stope(e);
         });
-        $(document).on("click", function (e) {
-            $(".layui-form-select").removeClass("layui-form-selected");
-        });
-
     });
 
-function loadMenuTree(tree) {
-    tree({
-        elem: "#classtree",
-        nodes: [{'id':1,'name':'sdads','open':true,'children':[{'id':2,'name':'asdfsa','open':false}]}],
-        click: function (node) {
-            var $select = $($(this)[0].elem).parents(".layui-form-select");
-            $select.removeClass("layui-form-selected").find(".layui-select-title span").html(node.name).end().find("input:hidden[name='selectID']").val(node.id);
+    function loadMenuTree(tree) {
+    $.ajax({
+        type : 'get',
+        url  : 'getTree',
+        data : '',
+        success : function (result) {
+            console.log(result);
+            if(result.code == 100){
+                result.data[0].checked = true;
+                console.log(result);
+                tree({
+                    elem: "#classtree",
+                    id:'righttree',
+                    nodes: result.data,
+                    click: function (node) {
+                        var $select = $($(this)[0].elem).parents(".layui-form-select");
+                        $select.removeClass("layui-form-selected").find(".layui-select-title span").html(node.name).end().find("input:hidden[name='parent_id']").val(node.id);
+                    }
+                });
+
+                $('#parent_tree').removeClass("layui-form-selected").find(".layui-select-title span").html('{$info.parent_name}').end().find("input:hidden[name='parent_id']").val({$info.parent_id});
+            }else{
+                layer.alert(result.msg,{icon:5});
+            }
+        },
+        error : function (result) {
+            layer.alert('请求失败！',{icon:5});
         }
     });
+
 }
+</script>
+<script>
+
 </script>
 </body>
 

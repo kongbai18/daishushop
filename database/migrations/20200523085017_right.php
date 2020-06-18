@@ -36,6 +36,7 @@ class Right extends Migrator
             ->addColumn('icon','string',['limit'=>255,'default'=>'','comment'=>'图标'])
             ->addColumn('parent_id','integer',['limit'=>11,'default'=>0,'comment'=>'上级id'])
             ->addColumn('sort','integer',['limit'=>11,'default'=>100,'comment'=>'排序'])
+            ->addColumn('is_menu','integer',['limit'=>4,'default'=>1,'comment'=>'是否作为菜单'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>0,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>0,'comment'=>'更新时间'])
             ->save();

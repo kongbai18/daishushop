@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller\right;
+namespace app\admin\controller\permission;
 
 use think\Controller;
 use think\Request;

@@ -1,19 +1,19 @@
 <?php
 
 
-namespace app\common\logic\right;
+namespace app\common\logic\permission;
 
 
-use app\common\model\right\Admin;
+use app\common\model\permission\Admin as AdminModel;
 use think\Db;
 
-class AdminLogic
+class Admin
 {
     public function saveAdminAndRole($adminData,$roleData = [])
     {
         Db::startTrans();
         try{
-            $adminModel = new Admin();
+            $adminModel = new AdminModel();
             $adminModel->save($adminData);
             $adminModel->role()->saveAll($roleData);
         }catch (\Exception $e){
@@ -35,7 +35,7 @@ class AdminLogic
     {
         Db::startTrans();
         try{
-            $adminModel = new Admin();
+            $adminModel = new AdminModel();
             $adminModel->save($adminData,['id',$adminData['id']]);
             $adminModel->role()->where('admin_id',$adminData['id'])->delete();
             $adminModel->role()->saveAll($roleData);

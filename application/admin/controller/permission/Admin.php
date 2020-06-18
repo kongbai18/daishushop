@@ -1,12 +1,12 @@
 <?php
 
-namespace app\admin\controller\right;
+namespace app\admin\controller\permission;
 
 use think\Controller;
 use think\Request;
-use app\common\model\right\Admin as AdminModel;
-use app\common\model\right\Role as RoleModel;
-use app\common\logic\right\AdminLogic;
+use app\common\model\permission\Admin as AdminModel;
+use app\common\model\permission\Role as RoleModel;
+use app\common\logic\permission\Admin as AdminLogic;
 
 class Admin extends Controller
 {

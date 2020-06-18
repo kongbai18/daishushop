@@ -21,6 +21,7 @@ class Right extends Validate
         'icon|图标'      => 'max:255',
         'parent_id|上级id' => 'require|integer',
         'sort|排序'     => 'require|integer',
+        'is_menu|是否作为菜单'     => 'require|integer|in:1,2',
     ];
     
     /**
@@ -32,6 +33,8 @@ class Right extends Validate
     protected $message = [];
 
     protected $scene = [
-        'save' => ['name','module','controller','method','icon','parent_id','sort'],
+        'save'   => ['name','module','controller','method','icon','parent_id','sort','is_menu'],
+        'update' => ['id','name','module','controller','method','icon','parent_id','sort','is_menu'],
+        'sort'   => ['id','sort'],
     ];
 }
