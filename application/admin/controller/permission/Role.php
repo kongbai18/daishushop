@@ -5,6 +5,9 @@ namespace app\admin\controller\permission;
 use think\Controller;
 use think\Request;
 
+use app\common\model\permission\Role as RoleModel;
+use
+
 class Role extends Controller
 {
     /**
@@ -14,7 +17,11 @@ class Role extends Controller
      */
     public function index()
     {
-        //
+        $data = $this->request->param();
+        $roleModel = new RoleModel();
+        $list = $roleModel->getList($data);
+        $this->assign('list',$list);
+        return $this->fetch();
     }
 
     /**
@@ -24,7 +31,8 @@ class Role extends Controller
      */
     public function create()
     {
-        //
+
+        return $this->fetch();
     }
 
     /**

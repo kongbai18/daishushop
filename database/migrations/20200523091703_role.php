@@ -30,7 +30,7 @@ class Role extends Migrator
     {
         $table = $this->table('role',['engine'=>'InnoDB','default'=>'角色表']);
         $table->addColumn('name','string',['limit'=>30,'default'=>'','comment'=>'角色名称'])
-            ->addColumn('desc','string',['limit'=>255,'default'=>'','comment'=>'角色描述'])
+            ->addColumn('describe','string',['limit'=>255,'default'=>'','comment'=>'角色描述'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>0,'comment'=>'创建时间'])
             ->addColumn('update_time','integer',['limit'=>11,'default'=>0,'comment'=>'更新时间'])
             ->save();
