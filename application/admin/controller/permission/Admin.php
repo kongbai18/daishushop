@@ -31,7 +31,7 @@ class Admin extends Controller
      */
     public function create()
     {
-        $roleList = RoleModel::cache('role_list')->all();
+        $roleList = RoleModel::cache('admin_role_list')->all();
         $this->assign('roleList',$roleList);
         return $this->fetch();
     }
@@ -42,11 +42,11 @@ class Admin extends Controller
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save(Request $request)
+    public function save()
     {
         $data = $this->request->param();
         //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Admin.save');
+        $validateResult = $this->validate($data,'app\common\validate\permission\Admin.save');
         if($validateResult !== true){
             return $this->result([],104,$validateResult);
         }
@@ -54,7 +54,7 @@ class Admin extends Controller
         //数据处理与存储
         if(isset($data['role']) && is_array($data['role'])){
             $role = array_keys($data['role']);
-            $roleList = RoleModel::where(['id','in',$role])->field('id as role_id')->select();
+            $roleList = RoleModel::where([['id','in',$role]])->field('id as role_id')->select()->toArray();
         }else{
             $roleList = [];
         }
@@ -87,21 +87,14 @@ class Admin extends Controller
      */
     public function edit($id)
     {
-        $data = $this->request->param();
-        //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Admin.id');
-        if($validateResult !== true){
-            return $this->result([],104,$validateResult);
-        }
-
         //验证数据是否存在
-        $info = AdminModel::get($data['id']);
+        $info = AdminModel::get($id);
         if(!$info){
             return $this->result([],101,'原始数据不存在,无法修改!');
         }
         $this->assign('info',$info);
 
-        $roleList = RoleModel::cache('role_list')->all();
+        $roleList = RoleModel::cache('admin_role_list')->all();
         $this->assign('roleList',$roleList);
 
         return  $this->fetch();
@@ -114,17 +107,17 @@ class Admin extends Controller
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $data = $this->request->param();
         //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Admin.update');
+        $validateResult = $this->validate($data,'app\common\validate\permission\Admin.update');
         if($validateResult !== true){
             return $this->result([],104,$validateResult);
         }
 
         //验证数据是否存在
-        $info = AdminModel::get($data['id']);
+        $info = AdminModel::get($id);
         if(!$info){
             return $this->result([],101,'原始数据不存在,无法修改!');
         }
@@ -136,7 +129,7 @@ class Admin extends Controller
         //数据处理与存储
         if(isset($data['role']) && is_array($data['role'])){
             $role = array_keys($data['role']);
-            $roleList = RoleModel::where(['id','in',$role])->field('id as role_id')->select();
+            $roleList = RoleModel::where([['id','in',$role]])->field('id as role_id')->select();
         }else{
             $roleList = [];
         }

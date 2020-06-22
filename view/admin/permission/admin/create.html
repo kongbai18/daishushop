@@ -53,11 +53,8 @@
                 <label class="layui-form-label"><span class="x-red">*</span>角色</label>
                 <div class="layui-input-block">
                     {foreach $roleList as  $key => $v}
-                    <input type="checkbox" name="role[{$v.id}]" lay-skin="primary" title="{$v.name}" checked="">
+                    <input type="checkbox" name="role[{$v.id}]" lay-skin="primary" title="{$v.name}" >
                     {/foreach}
-                    <input type="checkbox" name="like1[write]" lay-skin="primary" title="超级管理员" checked="">
-                    <input type="checkbox" name="like1[read]" lay-skin="primary" title="编辑人员">
-                    <input type="checkbox" name="like1[write]" lay-skin="primary" title="宣传人员" checked="">
                 </div>
             </div>
             <div class="layui-form-item">

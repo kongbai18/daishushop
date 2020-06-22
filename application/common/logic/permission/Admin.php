@@ -9,6 +9,13 @@ use think\Db;
 
 class Admin
 {
+    /**
+     * 新增管理员及关联角色
+     * @param $adminData 管理员信息
+     * @param array $roleData 角色信息
+     * @return array
+     *User: ligo
+     */
     public function saveAdminAndRole($adminData,$roleData = [])
     {
         Db::startTrans();
@@ -31,6 +38,13 @@ class Admin
         ];
     }
 
+    /**
+     * 修改管理员信息 及关联角色
+     * @param $adminData 管理员信息
+     * @param array $roleData 角色信息
+     * @return array
+     *User: ligo
+     */
     public function updateAdminAndRole($adminData,$roleData = [])
     {
         Db::startTrans();

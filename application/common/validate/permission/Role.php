@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\validate\right;
+namespace app\common\validate\permission;
 
 use think\Validate;
 
@@ -15,7 +15,7 @@ class Role extends Validate
 	protected $rule = [
 	    'id|id'          => 'require|integer',
 	    'name|角色名称'   => 'require|max:30',
-        'desc|角色描述'   => 'max|255',
+        'describe|角色描述'   => 'max|255',
     ];
     
     /**
@@ -25,4 +25,9 @@ class Role extends Validate
      * @var array
      */	
     protected $message = [];
+
+    protected $scene = [
+        'save'   => ['name','describe'],
+        'update'   => ['id','name','describe'],
+    ];
 }

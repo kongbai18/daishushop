@@ -2,13 +2,20 @@
 
 namespace app\common\model\permission;
 
+use think\facade\Cache;
 use think\Model;
 
 class Role extends Model
 {
-    //
+    protected static function init()
+    {
+        Role::afterWrite(function () {
+            Cache::rm('admin_role_list');
+        });
+    }
+
     public function right(){
-        return $this->hasMany('RoleRight','id','role_id');
+        return $this->hasMany('RoleRight','role_id','id');
     }
 
     public function getList($data)

@@ -28,6 +28,13 @@ class Right extends Controller
         return $this->result($tree,100,'获取成功','json');
     }
 
+    public function getLikeTree()
+    {
+        $rightLogic = new RightLogic();
+        $tree = $rightLogic->getLikeTree();
+        return $this->result($tree,100,'获取成功','json');
+    }
+
     /**
      * 显示创建资源表单页.
      *

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\validate\right;
+namespace app\common\validate\permission;
 
 use think\Validate;
 
