@@ -6,7 +6,8 @@ use think\Controller;
 use think\Request;
 
 use app\common\model\permission\Role as RoleModel;
-use
+use app\common\model\permission\Right as RightModel;
+use app\common\logic\permission\Role as RoleLogic;
 
 class Role extends Controller
 {
@@ -31,7 +32,6 @@ class Role extends Controller
      */
     public function create()
     {
-
         return $this->fetch();
     }
 
@@ -41,9 +41,30 @@ class Role extends Controller
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save(Request $request)
+    public function save()
     {
-        //
+        $data = $this->request->param();
+        //数据验证
+        $validateResult = $this->validate($data,'app\common\validate\permission\Role.save');
+        if($validateResult !== true){
+            return $this->result([],104,$validateResult);
+        }
+
+        //数据处理与存储
+        if(isset($data['right']) && is_array($data['right'])){
+            $right= array_values($data['right']);
+            $rightList = RightModel::where([['id','in',$right]])->field('id as right_id')->select()->toArray();
+        }else{
+            $rightList = [];
+        }
+        $roleLogic = new RoleLogic();
+        $result = $roleLogic->saveRoleAndRight($data,$rightList);
+
+        if($result['status']){
+            return  $this->result([],100,$result['msg']);
+        }
+
+        return  $this->result([],105,$result['msg']);
     }
 
     /**

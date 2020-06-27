@@ -21,7 +21,7 @@ class Right
     {
         $list = RightModel::all(function ($query){
             $query->order('sort asc');
-        },'');
+        },'','admin_right_list');
         return $this->_getTree($list);
     }
 
@@ -34,7 +34,7 @@ class Right
     {
         $list = RightModel::all(function ($query){
             $query->order('sort asc');
-        },'');
+        },'','admin_right_list');
         return $this->_getLikeTree($list);
     }
 

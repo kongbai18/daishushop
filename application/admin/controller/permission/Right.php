@@ -28,6 +28,13 @@ class Right extends Controller
         return $this->result($tree,100,'获取成功','json');
     }
 
+    public function getLikeTree()
+    {
+        $rightLogic = new RightLogic();
+        $tree = $rightLogic->getLikeTree();
+        return $this->result($tree,100,'获取成功','json');
+    }
+
     /**
      * 显示创建资源表单页.
      *
@@ -57,7 +64,7 @@ class Right extends Controller
     {
         $data = $this->request->param();
         //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Right.save');
+        $validateResult = $this->validate($data,'app\common\validate\permission\Right.save');
         if($validateResult !== true){
             return $this->result([],104,$validateResult);
         }
@@ -118,7 +125,7 @@ class Right extends Controller
     {
         $data = $this->request->param();
         //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Right.update');
+        $validateResult = $this->validate($data,'app\common\validate\permission\Right.update');
         if($validateResult !== true){
             return $this->result([],101,$validateResult);
         }
@@ -147,7 +154,7 @@ class Right extends Controller
     {
         $data = $this->request->only('id,sort');
         //数据验证
-        $validateResult = $this->validate($data,'app\common\validate\right\Right.sort');
+        $validateResult = $this->validate($data,'app\common\validate\permission\Right.sort');
         if($validateResult !== true){
             return $this->result([],101,$validateResult,'json');
         }
