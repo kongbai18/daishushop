@@ -11,6 +11,7 @@ class Right extends Model
     {
         Right::afterWrite(function () {
             Cache::rm('admin_right_list');
+            Cache::rm('admin_right_menu_list');
         });
     }
 }

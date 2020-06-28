@@ -2,6 +2,7 @@
 
 namespace app\common\model\permission;
 
+use app\common\lib\IAuth;
 use think\Model;
 
 class Admin extends Model
@@ -12,6 +13,11 @@ class Admin extends Model
 
     public function role(){
         return $this->hasMany('AdminRole','admin_id','id');
+    }
+
+    public function setPasswordAttr($value)
+    {
+        return IAuth::setPassword($value);
     }
 
     public function getList($data)
@@ -36,7 +42,7 @@ class Admin extends Model
             ->leftJoin('admin_role b','a.id = b.admin_id')
             ->where($where)
             ->group('a.id')
-            ->order('a.id desc')
+            ->order('a.id asc')
             ->paginate($size,false,['query'=>$data]);
 
         return $list;

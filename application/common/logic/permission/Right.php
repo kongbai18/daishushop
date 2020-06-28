@@ -25,6 +25,14 @@ class Right
         return $this->_getTree($list);
     }
 
+    public function getMenuTree()
+    {
+        $list = RightModel::all(function ($query){
+            $query->where([['is_menu','eq',1]])->order('sort asc');
+        },'','admin_right_menu_list');
+        return $this->_getTree($list);
+    }
+
     /**
      * 获取类树形结构 一维数组
      * @return array

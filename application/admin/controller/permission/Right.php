@@ -66,14 +66,14 @@ class Right extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Right.save');
         if($validateResult !== true){
-            return $this->result([],104,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         try{
             $rightModel = new RightModel();
             $rightModel->save($data);
         }catch (\Exception $e){
-            return  $this->result([],101,$e->getMessage());
+            return  $this->result([],105,$e->getMessage());
         }
 
         return  $this->result([],100,'新增成功');
@@ -127,7 +127,7 @@ class Right extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Right.update');
         if($validateResult !== true){
-            return $this->result([],101,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         try{
@@ -156,7 +156,7 @@ class Right extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Right.sort');
         if($validateResult !== true){
-            return $this->result([],101,$validateResult,'json');
+            return $this->result([],102,$validateResult,'json');
         }
 
         try{

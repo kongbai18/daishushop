@@ -58,7 +58,11 @@
                             <td>{$v.email}</td>
                             <td></td>
                             <td>{$v.create_time}</td>
-                            <td>{$v.last_time}</td>
+                            <td>
+                                {if $v.last_time > 0}
+                                {:date('Y-m-d H:i:s',$v.last_time)}
+                                {/if}
+                            </td>
                             <td>{$v.last_ip}</td>
                             <td class="td-status">
                             {switch $v.status}

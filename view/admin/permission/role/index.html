@@ -57,6 +57,7 @@
                                 {if $v.id != 1}
                                 <button class="layui-btn layui-btn layui-btn-xs"  onclick="xadmin.open('编辑','edit?id={$v.id}')" ><i class="layui-icon">&#xe642;</i>编辑</button>
                                 <button class="layui-btn-danger layui-btn layui-btn-xs"  onclick="member_del(this,{$v.id})" href="javascript:;" ><i class="layui-icon">&#xe640;</i>删除</button>
+                                {/if}
                             </td>
                         </tr>
                         {/foreach}

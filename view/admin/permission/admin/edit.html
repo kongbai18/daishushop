@@ -81,8 +81,8 @@
         //自定义验证规则
         form.verify({
             nickname: function(value) {
-                if (value.length < 5 || value.length > 30) {
-                    return '昵称必须在5-30个字符之间';
+                if (value.length < 3 || value.length > 30) {
+                    return '昵称必须在3-30个字符之间';
                 }
             },
             pass: function (value) {

@@ -4,12 +4,12 @@ namespace app\admin\controller;
 use think\Controller;
 use app\common\logic\permission\Right as RightLogic;
 
-class Index extends Controller
+class Index extends Base
 {
     public function index()
     {
         $rightLogic = new RightLogic();
-        $tree = $rightLogic->getTree();
+        $tree = $rightLogic->getMenuTree();
         $this->assign('rightTree',$tree);
         return $this->fetch();
     }

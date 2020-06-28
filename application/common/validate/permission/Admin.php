@@ -33,6 +33,7 @@ class Admin extends Validate
     protected $scene = [
         'id' => ['id'],
         'save' => ['admin_name','password','repassword','email'],
+        'setpass' => ['password','repassword'],
     ];
 
     public function sceneUpdate()
@@ -40,5 +41,11 @@ class Admin extends Validate
         return $this->only(['id','admin_name','password','email'])
             ->remove('password','require')
             ->remove('repassword','require');
+    }
+
+    public function sceneLogin()
+    {
+        return $this->only(['admin_name','password'])
+            ->remove('admin_name','unique');
     }
 }

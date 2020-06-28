@@ -2,12 +2,12 @@
 
 namespace app\admin\controller\permission;
 
-use think\Controller;
+use app\admin\controller\Base;
 use app\common\model\permission\Admin as AdminModel;
 use app\common\model\permission\Role as RoleModel;
 use app\common\logic\permission\Admin as AdminLogic;
 
-class Admin extends Controller
+class Admin extends Base
 {
     /**
      * 显示资源列表
@@ -47,7 +47,7 @@ class Admin extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Admin.save');
         if($validateResult !== true){
-            return $this->result([],104,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         //数据处理与存储
@@ -88,7 +88,7 @@ class Admin extends Controller
     public function edit($id)
     {
         //验证数据是否存在
-        $info = AdminModel::get($id,'role');
+        $info = AdminModel::get($id,'role',true);
         if(!$info){
             return $this->result([],104,'原始数据不存在,无法修改!');
 
@@ -121,13 +121,13 @@ class Admin extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Admin.update');
         if($validateResult !== true){
-            return $this->result([],104,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         //验证数据是否存在
-        $info = AdminModel::get($id);
+        $info = AdminModel::get($id,'',true);
         if(!$info){
-            return $this->result([],101,'原始数据不存在,无法修改!');
+            return $this->result([],104,'原始数据不存在,无法修改!');
         }
 
         if($info->id == 1){
@@ -165,5 +165,28 @@ class Admin extends Controller
     public function delete($id)
     {
         //
+    }
+
+    public function editPass()
+    {
+        if($this->request->isPost()){
+            $data = $this->request->only('password,repassword','post');
+            //数据验证
+            $validateResult = $this->validate($data,'app\common\validate\permission\Admin.setpass');
+            if($validateResult !== true){
+                return $this->result([],102,$validateResult);
+            }
+
+            try{
+                AdminModel::update($data,[['id','eq',$this->adminId]]);
+            }catch (\Exception $e){
+                return $this->result([],105,$e->getMessage());
+            }
+
+            return $this->result([],100,'修改成功');
+
+        }else{
+            return $this->fetch();
+        }
     }
 }

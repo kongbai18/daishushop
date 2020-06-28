@@ -33,7 +33,7 @@ class Admin extends Migrator
             ->addColumn('password','string',['limit'=>32,'comment'=>'密码'])
             ->addColumn('email','string',['default'=>'','comment'=>'邮箱'])
             ->addColumn('avatar','string',['limit'=>255,'default'=>'','comment'=>'头像'])
-            ->addColumn('last_ip','string',['limit'=>30,'default'=>'','comment'=>'密码'])
+            ->addColumn('last_ip','string',['limit'=>30,'default'=>'','comment'=>'最后登录ip'])
             ->addColumn('last_time','integer',['limit'=>11,'default'=>0,'comment'=>'最后登录时间'])
             ->addColumn('status','integer',['limit'=>1,'default'=>1,'comment'=>'状态'])
             ->addColumn('create_time','integer',['limit'=>11,'default'=>0,'comment'=>'创建时间'])

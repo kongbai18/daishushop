@@ -47,7 +47,7 @@ class Role extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Role.save');
         if($validateResult !== true){
-            return $this->result([],104,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         //数据处理与存储
@@ -86,7 +86,7 @@ class Role extends Controller
      */
     public function edit($id)
     {
-        $info = RoleModel::get($id);
+        $info = RoleModel::get($id,'',true);
         if(!$info){
             return $this->result([],104,'原始数据不存在,无法修改!');
         }
@@ -117,7 +117,7 @@ class Role extends Controller
         //数据验证
         $validateResult = $this->validate($data,'app\common\validate\permission\Role.update');
         if($validateResult !== true){
-            return $this->result([],104,$validateResult);
+            return $this->result([],102,$validateResult);
         }
 
         $info = RoleModel::get($data['id']);

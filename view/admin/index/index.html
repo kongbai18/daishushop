@@ -60,11 +60,10 @@
             <dl class="layui-nav-child">
                 <!-- 二级菜单 -->
                 <dd>
-                    <a onclick="xadmin.open('个人信息','http://www.baidu.com')">个人信息</a></dd>
+                    <a onclick="xadmin.open('修改密码','/admin/permission.admin/editPass')">修改密码</a></dd>
                 <dd>
-                    <a onclick="xadmin.open('切换帐号','http://www.baidu.com')">切换帐号</a></dd>
-                <dd>
-                    <a href="./login.html">退出</a></dd>
+                    <a href="javascript:void(0)" onclick="logout()">退出</a>
+                </dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index">
@@ -82,7 +81,7 @@
             <li>
                 {if isset($v.children)}
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="{$v.name}">&#xe6b8;</i>
+                    <i class="iconfont left-nav-li" lay-tips="{$v.name}">{:htmlspecialchars_decode($v.icon)}</i>
                     <cite>{$v.name}</cite>
                     <i class="iconfont nav_right">&#xe697;</i>
                 </a>
@@ -406,5 +405,24 @@
 
 <!-- 中部结束 -->
 </body>
+<script>
+    function logout() {
+        $.ajax({
+            type : 'post',
+            url  : '/admin/login/logout',
+            data : {},
+            success : function (result) {
+                if(result.code == 100){
+                    location.href = '/admin/login/login';
+                }else{
+                    layer.alert(result.msg,{icon:5});
+                }
+            },
+            error : function (result) {
+                layer.alert('请求失败！'.msg,{icon:5});
+            }
+        });
+    }
+</script>
 </html>
 
