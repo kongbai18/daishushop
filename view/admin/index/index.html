@@ -78,6 +78,52 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
+            {foreach $rightTree as $k => $v}
+            <li>
+                {if isset($v.children)}
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="{$v.name}">&#xe6b8;</i>
+                    <cite>{$v.name}</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    {foreach $v.children as $k1 => $v1}
+                    <li>
+                        {if isset($v1.children)}
+                        <a href="javascript:;">
+                            <i class="iconfont left-nav-li" lay-tips="{$v1.name}">&#xe6b8;</i>
+                            <cite>{$v1.name}</cite>
+                            <i class="iconfont nav_right">&#xe697;</i>
+                        </a>
+                        <ul class="sub-menu">
+                            {foreach $v1.children as $k2 => $v2}
+                            <li>
+                                <a onclick="xadmin.add_tab('{$v2.name}','/{$v2.module}/{$v2.controller}/{$v2.method}')">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <cite>{$v2.name}</cite>
+                                </a>
+
+                            </li>
+                            {/foreach}
+                        </ul>
+                        {else /}
+                        <a onclick="xadmin.add_tab('{$v1.name}','/{$v1.module}/{$v1.controller}/{$v1.method}')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>{$v1.name}</cite>
+                        </a>
+                        {/if}
+                    </li>
+                    {/foreach}
+                </ul>
+                {else /}
+                <a onclick="xadmin.add_tab('{$v.name}','/{$v.module}/{$v.controller}/{$v.method}')">
+                    <i class="iconfont left-nav-li" lay-tips="{$v.name}">&#xe6b8;</i>
+                    <cite>{$v.name}</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                {/if}
+            </li>
+            {/foreach}
             <li>
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="会员管理">&#xe6b8;</i>

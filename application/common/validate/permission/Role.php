@@ -15,7 +15,7 @@ class Role extends Validate
 	protected $rule = [
 	    'id|id'          => 'require|integer',
 	    'name|角色名称'   => 'require|max:30',
-        'describe|角色描述'   => 'max|255',
+        'describe|角色描述'   => 'max:255',
     ];
     
     /**

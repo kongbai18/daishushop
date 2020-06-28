@@ -23,11 +23,7 @@ class Role extends Model
         $where = [];
 
         if(isset($data['name']) && $data['name']){
-            $where[] = ['a.admin_name','like','%'.trim($data['name']).'%'];
-        }
-
-        if (isset($data['role_id']) && is_numeric($data['role_id'])){
-            $where[] = ['b.role_id','eq',$data['role_id']];
+            $where[] = ['name','like','%'.trim($data['name']).'%'];
         }
 
         if(isset($data['size']) && is_numeric($data['size'])){
@@ -36,11 +32,11 @@ class Role extends Model
             $size = 10;
         }
 
-        $list = $this->alias('a')->field('a.*')
+        $list = $this->field('*')
             ->where($where)
             ->with('right')
-            ->group('a.id')
-            ->order('a.id desc')
+            ->group('id')
+            ->order('id asc')
             ->paginate($size,false,['query'=>$data]);
 
         return $list;

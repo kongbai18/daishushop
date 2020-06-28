@@ -4,19 +4,20 @@
     <div class="layui-row">
         <form class="layui-form">
             {:token()}
+            <input type="hidden" name="id" value="{$info.id}">
             <div class="layui-form-item">
                 <label for="username" class="layui-form-label">
                     <span class="x-red">*</span>角色名称
                 </label>
                 <div class="layui-input-inline">
                     <input type="text" name="name" required="" lay-verify="required|name"
-                           autocomplete="off" class="layui-input">
+                           autocomplete="off" class="layui-input" value="{$info.name}">
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">请填写描述</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" name="describe" class="layui-textarea"></textarea>
+                    <textarea placeholder="请输入内容" name="describe" class="layui-textarea">{$info.describe}</textarea>
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
@@ -28,10 +29,10 @@
             </div>
 
             <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">
+                <label class="layui-form-label">
                 </label>
-                <button  class="layui-btn" lay-filter="add" lay-submit="">
-                    增加
+                <button  class="layui-btn" lay-filter="edit" lay-submit="">
+                    修改
                 </button>
             </div>
         </form>
@@ -57,26 +58,19 @@
                         return '角色名称必须在2-30个字符之间';
                     }
                 },
-                pass: [/(.+){6,16}$/, '密码必须6到16位'],
-                repass: function(value) {
-                    if ($('#L_pass').val() != $('#L_repass').val()) {
-                        return '两次密码不一致';
-                    }
-                }
             });
 
             //监听提交
-            form.on('submit(add)',
+            form.on('submit(edit)',
                 function(data) {
-                    console.log(data);
                     //发异步，把数据提交给php
                     $.ajax({
                         type : 'post',
-                        url  : 'save',
+                        url  : 'update',
                         data : data.field,
                         success : function (result) {
                             if(result.code == 100){
-                                layer.alert("增加成功", {
+                                layer.alert("修改成功", {
                                         icon: 6
                                     },
                                     function() {
@@ -107,14 +101,23 @@
                     url  : '/admin/permission.right/getTree',
                     data : '',
                     success : function (result) {
-                        console.log(result);
                         if(result.code == 100){
-                            authtree.render("#right_tree",result.data,{
-                                inputname: 'right[]',
-                                childKey: 'children',
-                                valueKey: 'id',
-                                layfilter: 'lay-check-auth',
-                                autowidth: true,
+                            $.ajax({
+                                type : 'get',
+                                url  : 'getRoleRight',
+                                data : {id:{$info.id}},
+                                success : function (res) {
+                                    if(res.code == 100){
+                                        authtree.render("#right_tree",result.data,{
+                                            inputname: 'right[]',
+                                            childKey: 'children',
+                                            valueKey: 'id',
+                                            layfilter: 'lay-check-auth',
+                                            checkedKey: res.data,
+                                            autowidth: true,
+                                        });
+                                    }
+                                }
                             });
                         }else{
 
