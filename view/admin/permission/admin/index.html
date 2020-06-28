@@ -49,7 +49,9 @@
                         {foreach $list as $key => $v}
                         <tr>
                             <td>
+                                {if $v.id != 1}
                                 <input type="checkbox" name=""  lay-skin="primary">
+                                {/if}
                             </td>
                             <td>{$v.id}</td>
                             <td>{$v.admin_name}</td>
@@ -70,6 +72,7 @@
                             {/switch}
 
                             <td class="td-manage">
+                                {if $v.id != 1}
                                 {switch $v.status}
                                     {case 1}
                                     <a onclick="member_status(this,{$v.id})" href="javascript:;"  title="停用">
@@ -89,6 +92,7 @@
                                 <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
                                     <i class="layui-icon">&#xe640;</i>
                                 </a>
+                                {/if}
                             </td>
                         </tr>
                         {/foreach}

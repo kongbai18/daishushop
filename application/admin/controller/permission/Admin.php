@@ -91,7 +91,13 @@ class Admin extends Controller
         $info = AdminModel::get($id,'role');
         if(!$info){
             return $this->result([],104,'原始数据不存在,无法修改!');
+
         }
+
+        if($info->id == 1){
+            return  $this->result([],103,'无法修改');
+        }
+
         $this->assign('info',$info);
 
 
@@ -122,6 +128,10 @@ class Admin extends Controller
         $info = AdminModel::get($id);
         if(!$info){
             return $this->result([],101,'原始数据不存在,无法修改!');
+        }
+
+        if($info->id == 1){
+            return  $this->result([],103,'无法修改');
         }
 
         if(isset($data['password']) && !$data['password']){

@@ -57,12 +57,6 @@
                         return '角色名称必须在2-30个字符之间';
                     }
                 },
-                pass: [/(.+){6,16}$/, '密码必须6到16位'],
-                repass: function(value) {
-                    if ($('#L_pass').val() != $('#L_repass').val()) {
-                        return '两次密码不一致';
-                    }
-                }
             });
 
             //监听提交
