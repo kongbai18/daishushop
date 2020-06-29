@@ -2,12 +2,11 @@
 
 namespace app\admin\controller\permission;
 
-use think\Controller;
-use think\Request;
+use app\admin\controller\Base;
 use app\common\model\permission\Right as RightModel;
 use app\common\logic\permission\Right as RightLogic;
 
-class Right extends Controller
+class Right extends Base
 {
     /**
      * 显示资源列表

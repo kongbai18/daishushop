@@ -32,4 +32,9 @@ return [
     'taglib_begin' => '{',
     // 标签库标签结束标记
     'taglib_end'   => '}',
+
+    'http_exception_template'    =>  [
+        // 还可以定义其它的HTTP status
+        401 =>  Env::get('app_path') . 'admin\401.html',
+    ]
 ];

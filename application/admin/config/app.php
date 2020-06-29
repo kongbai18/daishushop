@@ -143,4 +143,9 @@ return [
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
 
+    'http_exception_template'    =>  [
+        // 还可以定义其它的HTTP status
+        401 =>  Env::get('app_path') . 'admin\401.html',
+    ]
+
 ];

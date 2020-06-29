@@ -14,4 +14,19 @@ class Right extends Model
             Cache::rm('admin_right_menu_list');
         });
     }
+
+    public function setModuleAttr($value)
+    {
+        return strtolower($value);
+    }
+
+    public function setControllerAttr($value)
+    {
+        return strtolower($value);
+    }
+
+    public function setMethodAttr($value)
+    {
+        return strtolower($value);
+    }
 }

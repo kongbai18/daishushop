@@ -2,16 +2,15 @@
 
 namespace app\admin\controller\permission;
 
-use think\Controller;
+use app\admin\controller\Base;
 use think\Db;
-use think\Request;
 
 use app\common\model\permission\Role as RoleModel;
 use app\common\model\permission\Right as RightModel;
 use app\common\logic\permission\Role as RoleLogic;
 use app\common\model\permission\RoleRight as RoleRightModel;
 
-class Role extends Controller
+class Role extends Base
 {
     /**
      * 显示资源列表
