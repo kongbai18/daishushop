@@ -45,6 +45,11 @@ class Login extends Base
         });
 
         if($admin){
+            if($admin['status'] != 1){
+                return $this->result([],1102,'账号已冻结!','json');
+            }
+
+
             if($admin['password'] == IAuth::setPassword($data['password'])){
                 $udata = [
                     'last_time' => time(),

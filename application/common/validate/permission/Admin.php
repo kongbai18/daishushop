@@ -19,7 +19,7 @@ class Admin extends Validate
         'repassword|重复密码'   =>  'require|confirm:password',
         'email|邮箱'            => 'require|email|unique:admin,email',
         'avatar|头像'           => 'url',
-        'status|状态'           => 'in:1,2',
+        'status|状态'           => 'require|in:1,2',
     ];
     
     /**
@@ -34,6 +34,7 @@ class Admin extends Validate
         'id' => ['id'],
         'save' => ['admin_name','password','repassword','email'],
         'setpass' => ['password','repassword'],
+        'status' => ['id','status'],
     ];
 
     public function sceneUpdate()

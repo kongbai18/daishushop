@@ -167,6 +167,30 @@ class Admin extends Base
         //
     }
 
+    public function changeStatus()
+    {
+        $data = $this->request->only('id,status','post');
+        //数据验证
+        $validateResult = $this->validate($data,'app\common\validate\permission\Admin.status');
+        if($validateResult !== true){
+            return $this->result([],102,$validateResult);
+        }
+
+        //验证数据是否存在
+        $info = AdminModel::get($data['id']);
+        if(!$info){
+            return $this->result([],104,'原始数据不存在,无法修改!');
+        }
+
+        try{
+            AdminModel::update($data,[['id','eq',$data['id']]]);
+        }catch (\Exception $e){
+            return $this->result([],105,$e->getMessage());
+        }
+
+        return $this->result([],100,'修改成功');
+    }
+
     public function editPass()
     {
         if($this->request->isPost()){

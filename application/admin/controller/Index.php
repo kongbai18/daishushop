@@ -1,8 +1,8 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
 use app\common\logic\permission\Right as RightLogic;
+use app\common\model\permission\Admin as AdminModel;
 
 class Index extends Base
 {
@@ -11,6 +11,9 @@ class Index extends Base
         $rightLogic = new RightLogic();
         $tree = $rightLogic->getMenuTree();
         $this->assign('rightTree',$tree);
+
+        $admin = AdminModel::get($this->adminId);
+        $this->assign('admin',$admin);
         return $this->fetch();
     }
 
