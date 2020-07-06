@@ -90,7 +90,7 @@
                     <li>
                         {if isset($v1.children)}
                         <a href="javascript:;">
-                            <i class="iconfont left-nav-li" lay-tips="{$v1.name}">&#xe6b8;</i>
+                            <i class="iconfont left-nav-li" lay-tips="{$v1.name}">{:htmlspecialchars_decode($v1.icon)}</i>
                             <cite>{$v1.name}</cite>
                             <i class="iconfont nav_right">&#xe697;</i>
                         </a>
