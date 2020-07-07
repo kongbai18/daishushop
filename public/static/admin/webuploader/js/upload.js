@@ -62,7 +62,7 @@
                 } catch ( ex ) {
                     try {
                         version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash')
-                                .GetVariable('$version');
+                            .GetVariable('$version');
                     } catch ( ex2 ) {
                         version = '0.0';
                     }
@@ -74,10 +74,10 @@
             supportTransition = (function(){
                 var s = document.createElement('p').style,
                     r = 'transition' in s ||
-                            'WebkitTransition' in s ||
-                            'MozTransition' in s ||
-                            'msTransition' in s ||
-                            'OTransition' in s;
+                        'WebkitTransition' in s ||
+                        'MozTransition' in s ||
+                        'msTransition' in s ||
+                        'OTransition' in s;
                 s = null;
                 return r;
             })(),
@@ -110,7 +110,7 @@
                     var swf = '../lib/expressInstall.swf';
                     // insert flash object
                     var html = '<object type="application/' +
-                            'x-shockwave-flash" data="' +  swf + '" ';
+                        'x-shockwave-flash" data="' +  swf + '" ';
 
                     if (WebUploader.browser.ie) {
                         html += 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" ';
@@ -120,13 +120,13 @@
                         '<param name="movie" value="' + swf + '" />' +
                         '<param name="wmode" value="transparent" />' +
                         '<param name="allowscriptaccess" value="always" />' +
-                    '</object>';
+                        '</object>';
 
                     container.html(html);
 
                 })($wrap);
 
-            // 压根就没有安转。
+                // 压根就没有安转。
             } else {
                 $wrap.html('<a href="http://www.adobe.com/go/getflashplayer" target="_blank" border="0"><img alt="get flash player" src="http://www.adobe.com/macromedia/style_guide/images/160x41_Get_Flash_Player.jpg" /></a>');
             }
@@ -151,7 +151,7 @@
             swf: '../../dist/Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
-            server: '../../server/fileupload.php',
+            server: '/admin/upload.upload/uploadImage',
             // runtimeOrder: 'flash',
 
             // accept: {
@@ -213,10 +213,10 @@
         // 当有文件添加进来时执行，负责view的创建
         function addFile( file ) {
             var $li = $( '<li id="' + file.id + '">' +
-                    '<p class="title">' + file.name + '</p>' +
-                    '<p class="imgWrap"></p>'+
-                    '<p class="progress"><span></span></p>' +
-                    '</li>' ),
+                '<p class="title">' + file.name + '</p>' +
+                '<p class="imgWrap"></p>'+
+                '<p class="progress"><span></span></p>' +
+                '</li>' ),
 
                 $btns = $('<div class="file-panel">' +
                     '<span class="cancel">删除</span>' +
@@ -403,7 +403,7 @@
 
             if ( state === 'ready' ) {
                 text = '选中' + fileCount + '张图片，共' +
-                        WebUploader.formatSize( fileSize ) + '。';
+                    WebUploader.formatSize( fileSize ) + '。';
             } else if ( state === 'confirm' ) {
                 stats = uploader.getStats();
                 if ( stats.uploadFailNum ) {
@@ -414,8 +414,8 @@
             } else {
                 stats = uploader.getStats();
                 text = '共' + fileCount + '张（' +
-                        WebUploader.formatSize( fileSize )  +
-                        '），已上传' + stats.successNum + '张';
+                    WebUploader.formatSize( fileSize )  +
+                    '），已上传' + stats.successNum + '张';
 
                 if ( stats.uploadFailNum ) {
                     text += '，失败' + stats.uploadFailNum + '张';

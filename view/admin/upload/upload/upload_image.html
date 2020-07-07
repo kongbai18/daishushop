@@ -1,32 +1,116 @@
 {include file="layout/header" /}
+<style>
+    .webupload-nav{
+        border-bottom: 1px solid #ecf0f1;
+        list-style: none;
+        height: 60px;
+        box-sizing: border-box;
+    }
 
+    .webupload-nav>li {
+        float: left;
+        margin-bottom: -1px;
+        position: relative;
+        display: block;
+        height: 60px;
+        line-height:40px;
+        box-sizing:border-box;
+        padding: 10px 20px;
+        font-size: 16px;
+    }
+    .active{
+        border: 1px solid #ecf0f1;
+        cursor: default;
+        border-bottom-color: #fff;
+    }
+    .active>a{
+        color: #18BC9C;
+    }
+
+    .hid{
+        display: none;
+    }
+</style>
 <link rel="stylesheet" type="text/css" href="/static/admin/webuploader/css/webuploader.css" />
 <link rel="stylesheet" type="text/css" href="/static/admin/webuploader/css/style.css" />
-<div id="wrapper">
-    <div id="container">
-        <!--头部，相册选择和格式选择-->
+<div style="background-color: #fff;">
+    <ul class="webupload-nav">
+      <li class="active"><a href="javascript:void(0)" onclick="showUpload(this)">上传图片</a></li>
+      <li><a href="javascript:void(0)" onclick="showImgList(this)">图片库</a></li>
+    </ul>
+    <div id="wrapper">
+        <div id="container">
+            <!--头部，相册选择和格式选择-->
 
-        <div id="uploader">
-            <div class="queueList">
-                <div id="dndArea" class="placeholder">
-                    <div id="filePicker"></div>
-                    <p>或将照片拖到这里，单次最多可选300张</p>
+            <div id="uploader">
+                <div class="queueList">
+                    <div id="dndArea" class="placeholder">
+                        <div id="filePicker"></div>
+                        <p>或将照片拖到这里，单次最多可选300张</p>
+                    </div>
                 </div>
-            </div>
-            <div class="statusBar" style="display:none;">
-                <div class="progress">
-                    <span class="text">0%</span>
-                    <span class="percentage"></span>
-                </div><div class="info"></div>
-                <div class="btns">
-                    <div id="filePicker2"></div><div class="uploadBtn">开始上传</div>
+                <div class="statusBar" style="display:none;">
+                    <div class="progress">
+                        <span class="text">0%</span>
+                        <span class="percentage"></span>
+                    </div><div class="info"></div>
+                    <div class="btns">
+                        <div id="filePicker2"></div><div class="uploadBtn">开始上传</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div id="img-list" class="hid">
+        <div id="uploader">
+            <div class="queueList">
+                <ul class="filelist">
+                    <li class="state-complete">
+                        <p class="title"></p>
+                        <p class="imgWrap">
+                            <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="">
+                        </p>
+                        <p class="progress">
+                            <span style="display: none; width: 0px;"></span>
+                        </p>
+                        <span class="success"></span>
+                    </li>
+                    <li class="state-complete">
+                        <p class="title"></p>
+                        <p class="imgWrap">
+                            <img src="https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3892521478,1695688217&fm=26&gp=0.jpg" alt="">
+                        </p>
+                        <p class="progress">
+                            <span style="display: none; width: 0px;"></span>
+                        </p>
+                        <span class=""></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 
 <script type="text/javascript" src="/static/admin/webuploader/js/webuploader.min.js"></script>
 <script type="text/javascript" src="/static/admin/webuploader/js/upload.js"></script>
+<script>
+    function showUpload(obj) {
+        $('.active').removeClass('active');
+        $(obj).parent().addClass('active');
+        $('#container').removeClass('hid');
+        $('#img-list').addClass('hid');
+    }
+
+    function showImgList(obj) {
+        $('.active').removeClass('active');
+        $(obj).parent().addClass('active');
+        $('#container').addClass('hid');
+        $('#img-list').removeClass('hid');
+    }
+</script>
 </body>
 </html>

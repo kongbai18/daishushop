@@ -210,26 +210,26 @@ table {
 
 @-webkit-keyframes progressmove {
     0% {
-       background-position: 0 0;
+        background-position: 0 0;
     }
     100% {
-       background-position: 17px 0;
+        background-position: 17px 0;
     }
 }
 @-moz-keyframes progressmove {
     0% {
-       background-position: 0 0;
+        background-position: 0 0;
     }
     100% {
-       background-position: 17px 0;
+        background-position: 17px 0;
     }
 }
 @keyframes progressmove {
     0% {
-       background-position: 0 0;
+        background-position: 0 0;
     }
     100% {
-       background-position: 17px 0;
+        background-position: 17px 0;
     }
 }
 
