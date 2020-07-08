@@ -1,3 +1,6 @@
+var multi    = {$multi};//是否允许同时选多个文件
+var maxFiles = {$max_files};//允许上传多少文件
+
 (function( $ ){
     // 当domReady的时候开始初始化
     $(function() {
@@ -93,15 +96,18 @@
                     window['expressinstallcallback'] = function( state ) {
                         switch(state) {
                             case 'Download.Cancelled':
-                                alert('您取消了更新！')
+                                //alert('您取消了更新！')
+                                layer.msg('您取消了更新',{icon:6,time:1000});
                                 break;
 
                             case 'Download.Failed':
-                                alert('安装失败')
+                                //alert('安装失败')
+                                layer.msg('安装失败',{icon:5,time:1000});
                                 break;
 
                             default:
-                                alert('安装已成功，请刷新！');
+                                //alert('安装已成功，请刷新！');
+                                layer.msg('安装已成功',{icon:6,time:1000});
                                 break;
                         }
                         delete window['expressinstallcallback'];
@@ -133,7 +139,8 @@
 
             return;
         } else if (!WebUploader.Uploader.support()) {
-            alert( 'Web Uploader 不支持您的浏览器！');
+            //alert( 'Web Uploader 不支持您的浏览器！');
+            layer.msg('Web Uploader 不支持您的浏览器！',{icon:5,time:1000});
             return;
         }
 
@@ -144,11 +151,14 @@
                 label: '点击选择图片'
             },
             formData: {
-                uid: 123
+                filetype: '{$filetype}'
+            },
+            accept: {
+                extensions: '{$extensions}'
             },
             dnd: '#uploader .queueList',
             paste: '#uploader',
-            swf: '../../dist/Uploader.swf',
+            swf: './Uploader.swf',
             chunked: false,
             chunkSize: 512 * 1024,
             server: '/admin/upload.upload/uploadImage',
@@ -161,10 +171,10 @@
             // },
 
             // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
-            disableGlobalDnd: true,
-            fileNumLimit: 300,
-            fileSizeLimit: 200 * 1024 * 1024,    // 200 M
-            fileSingleSizeLimit: 50 * 1024 * 1024    // 50 M
+            disableGlobalDnd: multi,
+            fileNumLimit: maxFiles,
+            //fileSizeLimit: 200 * 1024 * 1024,    // 200 M
+            fileSingleSizeLimit: {$upload_max_filesize}    // 50 M
         });
 
         // 拖拽时不接受 js, txt 文件。
@@ -237,7 +247,7 @@
                             break;
 
                         default:
-                            text = '上传失败，请重试';
+                            text = code;
                             break;
                     }
 
@@ -281,6 +291,7 @@
             }
 
             file.on('statuschange', function( cur, prev ) {
+                console.log(cur);
                 if ( prev === 'progress' ) {
                     $prgress.hide().width(0);
                 } else if ( prev === 'queued' ) {
@@ -302,9 +313,10 @@
                 } else if ( cur === 'progress' ) {
                     $info.remove();
                     $prgress.css('display', 'block');
-                } else if ( cur === 'complete' ) {
+                } else if ( cur === 'success' ) {
                     $prgress.hide().width(0);
                     $li.append( '<span class="success"></span>' );
+                    console.log(852);
                 }
 
                 $li.removeClass( 'state-' + prev ).addClass( 'state-' + cur );
@@ -477,7 +489,8 @@
                 case 'finish':
                     stats = uploader.getStats();
                     if ( stats.successNum ) {
-                        alert( '上传成功' );
+                        //alert( '上传成功' );
+                        layer.msg('上传成功',{icon:6,time:1000});
                     } else {
                         // 没有成功的图片，重设
                         state = 'done';
@@ -525,9 +538,20 @@
 
         };
 
-        uploader.on( 'all', function( type ) {
+        uploader.on( 'all', function( type , file , result) {
             var stats;
             switch( type ) {
+                case 'uploadSuccess':
+                    console.log(type);
+                    console.log(file);
+                    console.log(result);
+                    if(result.code == 100){
+                        file.setStatus( 'success');
+                    }else{
+                        file.setStatus( 'error', result.msg );
+                        alert(456);
+                    }
+                    break;
                 case 'uploadFinished':
                     setState( 'confirm' );
                     break;
@@ -544,7 +568,21 @@
         });
 
         uploader.onError = function( code ) {
-            alert( 'Eroor: ' + code );
+            switch (code) {
+                case "Q_TYPE_DENIED":
+                    code = "文件类型错误！";
+                    break;
+                case "Q_EXCEED_NUM_LIMIT":
+                    code = "最多只能上传个文件";
+                    break;
+                case "F_DUPLICATE":
+                    code = "文件重复添加！";
+                    break;
+                case "F_EXCEED_SIZE":
+                    code = "您需要选择小于M的文件！";
+                    break;
+            }
+            layer.msg(code,{icon:5,time:1000});
         };
 
         $upload.on('click', function() {
@@ -566,7 +604,7 @@
         } );
 
         $info.on( 'click', '.ignore', function() {
-            alert( 'todo' );
+            layer.msg('todo',{icon:5,time:1000});
         } );
 
         $upload.addClass( 'state-' + state );
