@@ -10,9 +10,58 @@ namespace app\common\logic\shop;
 
 use app\common\model\shop\GoodsSpec as GoodsSpecModel;
 use app\common\model\shop\GoodsSpecValue as GoodsSpecValueModel;
+use think\Db;
 
 class GoodsSpec
 {
+    /**
+     * 同步添加规格和规格值
+     * @param $specData
+     * @param $specValueData
+     * @return array
+     *User: ligo
+     */
+    public function saveSpecAndSpecValue($specData, $specValueData)
+    {
+        Db::startTrans();
+        try{
+            $goodsSpecModel = new GoodsSpecModel();
+            $spec = $goodsSpecModel->getSpecInfoByName($specData['spec_name'], $specData['type_id']);
+            if($spec !== false){
+                $specId = $spec['id'];
+            }else{
+                $goodsSpecModel->save($specData);
+                $specId = $goodsSpecModel->id;
+            }
+
+            $goodsSpecValueModel = new GoodsSpecValueModel();
+            $goodsSpecValue = [];
+            foreach ($specValueData as $v){
+                $specValue = $goodsSpecValueModel->getSpecValueInfoByName($v['spec_value'], $specId);
+                if($specValue === false){
+                    $v['spec_id'] = $specId;
+                    $goodsSpecValue[] = $v;
+                }
+            }
+            if($goodsSpecValue){
+                $goodsSpecValueModel->saveAll($goodsSpecValue);
+            }
+
+        }catch (\Exception $e){
+            Db::rollback();
+            return [
+                'status' => false,
+                'msg'    => $e->getMessage(),
+            ];
+        }
+
+        Db::commit();
+        return [
+            'status' => true,
+            'msg'    => '添加成功',
+        ];
+    }
+
     /**
      * 添加规格
      * @param $data
@@ -67,7 +116,7 @@ class GoodsSpec
     {
         //根据规格值标记获取信息；存在则返回
         $goodsSpecValueModel = new GoodsSpecValueModel();
-        $specValue = $goodsSpecValueModel->getSpecValueInfoByName($data['spec_value_alt'], $data['spec_id']);
+        $specValue = $goodsSpecValueModel->getSpecValueInfoByName($data['spec_value'], $data['spec_id']);
         if($specValue !== false){
             return [
                 'status' => true,

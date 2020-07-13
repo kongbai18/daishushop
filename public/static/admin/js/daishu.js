@@ -1,10 +1,11 @@
 
 function uploadOneImage(dialog_title, input_selector) {
     openUploadDialog(dialog_title, function (dialog, files) {
-        $(input_selector).val(files[0].filepath);
-        $(input_selector + '-preview').attr('src', files[0].preview_url);
-        $(input_selector + '-name').val(files[0].name);
-    }, 20, 'image');
+        console.log(files);
+        console.log(input_selector);
+        $(input_selector).val(files[0].img_url);
+        $(input_selector + '-preview').attr('src', files[0].img_url);
+    }, 1, 'image');
 }
 
 /**
@@ -32,19 +33,18 @@ function openUploadDialog(dialog_title, callback, multi, filetype) {
         shade:0.4,
         title: dialog_title,
         content: '/admin/upload.upload/uploadImage?'+params,
-        yes:function () {
-            console.log(8546);
+        yes:function (index) {
             if (typeof callback == 'function') {
                 var frameId=document.getElementById(id).getElementsByTagName("iframe")[0].id;
                 var files = $('#'+frameId)[0].contentWindow.get_selected_files();
                 console.log(files);
                 if (files && files.length > 0) {
-                    callback.apply(this, files);
+                    callback.apply(this, [this, files]);
                 } else {
                     return false;
                 }
-
             }
+            layer.close(index);
         }
     });
 }

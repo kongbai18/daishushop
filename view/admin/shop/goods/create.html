@@ -12,8 +12,8 @@
     <div class="layui-row">
         <form class="layui-form">
             <ul class="layui-nav layui-bg-blue" lay-filter=""">
-                <li class="layui-nav-item layui-this"><a href="javascript:void(0)" onclick="changeTab(this,'goods-base')">基本信息</a></li>
-                <li class="layui-nav-item"><a href="javascript:void(0)" onclick="changeTab(this,'goods-describe')">商品详情</a></li>
+                <li class="layui-nav-item layui-this"><a href="javascript:void(0)" onclick="changeTab(this,'goods-base')">商品信息</a></li>
+                <li class="layui-nav-item"><a href="javascript:void(0)" onclick="changeTab(this,'goods-describe')">商品描述</a></li>
                 <li class="layui-nav-item"><a href="javascript:void(0)" onclick="changeTab(this,'goods-img')">商品图</a></li>
             </ul>
             <div class="goods-box" id="goods-base">
@@ -36,15 +36,88 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
+                    <label class="layui-form-label">
                         所属品牌
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="password" required="" lay-verify="pass"
+                        <input name="password" required="" lay-verify="pass"
                                autocomplete="off" class="layui-input">
                     </div>
                 </div>
 
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        商品主图
+                    </label>
+                    <div class="daishuAddImg">
+                        <input type="hidden" name="img_url" class="form-control" id="goods-image" value="">
+                        <a href="javascript:void(0)" onclick="uploadOneImage('图片上传','#goods-image')">
+                            <img src="/static/admin/images/default-thumbnail.png" id="goods-image-preview" width="135" height="135" style="cursor: pointer"/>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        规格
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="spec" lay-filter="spec">
+                            <option value="">请选择规格</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <select name="spec" lay-filter="spec">
+                            <option value="">请选择规格值</option>
+                        </select>
+                    </div>
+                    <div class="layui-btn layui-btn-primary" onclick="xadmin.open('添加用户','/admin/shop.goods_spec/createGoodsSpecAndSpecValue')">新建规格</div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                        基本数据
+                    </label>
+                    <div class="layui-input-block">
+                        <table id="product" class="layui-table" lay-skin="line">
+                            <thead>
+                                <tr>
+                                    <th>商品货号</th>
+                                    <th>库存</th>
+                                    <th>市场价格</th>
+                                    <th>销售价格</th>
+                                    <th>重量</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr>
+                                     <td>
+                                         785
+                                     </td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                 </tr>
+                                 <tr>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                 </tr>
+                                 <tr>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                     <td>111</td>
+                                 </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="goods-box goods-hidden" id="goods-describe">
@@ -67,7 +140,7 @@
     </div>
 </div>
 <script>
-    layui.use(['form', 'layer'],
+    layui.use(['form', 'layer','table'],
     function() {
         $ = layui.jquery;
         var form = layui.form,
@@ -80,12 +153,7 @@
                     return '昵称必须在3-30个字符之间';
                 }
             },
-            pass: [/(.+){6,16}$/, '密码必须6到16位'],
-            repass: function(value) {
-                if ($('#L_pass').val() != $('#L_repass').val()) {
-                    return '两次密码不一致';
-                }
-            }
+
         });
 
         //监听提交

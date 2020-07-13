@@ -11,16 +11,33 @@ namespace app\admin\controller\upload;
 
 use app\admin\controller\Base;
 
+
 class Upload extends Base
 {
     public function uploadImage()
     {
         if($this->request->isPost()){
-            $data = [
-                'id' => time() - 159111111,
-                'img_url' => 'https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3892521478,1695688217&fm=26&gp=0.jpg'
-            ];
-            $this->result($data,100,'','json');
+            $file = $this->request->file('file');
+            $type = 'Local';
+
+            $class = '\\app\\common\\logic\\upload\\'.ucfirst(strtolower($type));
+            if (!class_exists($class)) {
+                $this->result([],104,$type.'类不存在','json');
+            }
+
+            $uploadLogic = new $class();
+            $result = $uploadLogic->saveFile($file);
+
+            if($result['status']){
+                $data = [
+                    'id' => time() - 159111111,
+                    'img_url' => $result['data'],
+                ];
+                $this->result($data,100,'','json');
+            }
+
+
+            $this->result([],104,$result['msg'],'json');
         }else{
             $data = $this->request->param();
             if (empty($data["filetype"])) {

@@ -27,10 +27,10 @@ class GoodsSpecValue extends Model
      * @throws \think\exception\DbException
      *User: ligo
      */
-    public function getSpecValueInfoByName($specValueAlt, $specId)
+    public function getSpecValueInfoByName($specValue, $specId)
     {
         $info = $this->where([
-            ['spec_value_alt','eq',$specValueAlt],
+            ['spec_value','eq',$specValue],
             ['spec_id','eq',$specId],
         ])->find();
 

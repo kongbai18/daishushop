@@ -46,7 +46,7 @@
                 <div class="queueList">
                     <div id="dndArea" class="placeholder">
                         <div id="filePicker"></div>
-                        <p>或将照片拖到这里，单次最多可选300张</p>
+                        <p>或将照片拖到这里，单次最多可选{$max_files}张</p>
                     </div>
                 </div>
                 <div class="statusBar" style="display:none;">
@@ -64,10 +64,10 @@
 
 
     <div id="img-list" class="hid">
-        <div id="uploader">
+        <div id="chooseImg">
             <div class="queueList">
                 <ul class="imglist">
-                    <li class="state-complete">
+                    <li class="state-complete" onclick="choose(this)">
                         <p class="title"></p>
                         <p class="imgWrap">
                             <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="">
@@ -75,9 +75,9 @@
                         <p class="progress">
                             <span style="display: none; width: 0px;"></span>
                         </p>
-                        <span class="success"></span>
+                        <span></span>
                     </li>
-                    <li class="state-complete">
+                    <li class="state-complete" onclick="choose(this)">
                         <p class="title"></p>
                         <p class="imgWrap">
                             <img src="https://dss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3892521478,1695688217&fm=26&gp=0.jpg" alt="">
@@ -101,34 +101,68 @@
     function get_selected_files() {
         var files = [];
 
-        if ($("#wrapper").is(":hidden")) {
-            var file         = new Object();
-            file.img_id   = file.img_id;
-            file.img_url  = file.img_url;
-            files.push(file);
-        } else {
-            var number = $(".filelist li").length;
+        var upBox = $('#container').hasClass('hid');
+
+        if(!upBox){
+            if ($("#wrapper").is(":hidden")) {
+                var file         = new Object();
+                file.img_id   = file.img_id;
+                file.img_url  = file.img_url;
+                files.push(file);
+            } else {
+                var number = $(".filelist li").length;
+                for (var i = 0; i < number; i++) {
+                    var file         = new Object();
+                    var $file        = $(".filelist li").eq(i);
+
+                    file.img_id         = $file.data("img_id");
+                    file.img_url        = $file.data("img_url");
+
+                    if (file.img_url == undefined) {
+                        continue;
+                    } else {
+                        files.push(file);
+                    }
+                }
+            }
+        }else{
+            var number = $(".imglist li").length;
             console.log(number);
             for (var i = 0; i < number; i++) {
                 var file         = new Object();
-                var $file        = $(".filelist li").eq(i);
-                console.log($file.data("img_url"));
-                file.img_id         = $file.data("img_id");
-                file.img_url        = $file.data("img_url");
-                console.log( file.img_url);
-                if (file.img_url == undefined) {
-                    continue;
-                } else {
+                var $file        = $(".imglist li").eq(i);
+                console.log($file.find('span').hasClass('success'));
+                if($file.find('span').hasClass('success')){
+                    file.img_url = $file.find('.imgWrap').find('img').attr('src');
                     files.push(file);
                 }
+                console.log($file);
             }
         }
 
+
+
         return files;
     }
+
+
     
     var multi    = {$multi};//是否允许同时选多个文件
     var maxFiles = {$max_files};//允许上传多少文件
+
+    function choose(obj) {
+        var status = $(obj).find('span').hasClass('success');
+        if(status){
+            $(obj).find('span').removeClass('success');
+        }else{
+            var number = $('.imglist').find('.success').length;
+            if(number >= maxFiles){
+                layer.msg('最多可选择'+maxFiles+'张图',{icon:5,time:1000});
+                return;
+            }
+            $(obj).find('span').addClass('success');
+        }
+    }
 
     (function( $ ){
         // 当domReady的时候开始初始化

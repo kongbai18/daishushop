@@ -1,0 +1,178 @@
+{include file="layout/header" /}
+<style>
+    .layui-table tbody tr:hover {
+        background-color: white;
+    }
+    .spec-img-box{
+        display: inline-block;
+    }
+    .hid{
+        display: none;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form">
+            {:token()}
+            <div class="layui-form-item">
+                <label for="username" class="layui-form-label">
+                    <span class="x-red">*</span>规格名
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="username" name="admin_name" required="" lay-verify="required|nickname"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">
+                    <span class="x-red">*</span>规格类型
+                </label>
+                <div class="layui-input-inline">
+                    <select id="spec_type" name="spec_type" lay-verify="required" lay-filter="spec_type">
+                        {foreach $specType as  $key => $v}
+                        <option value="{$key}">{$v}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+
+                </label>
+                <button type="button" class="layui-btn layui-btn-primary" onclick="addTr()">
+                    <i class="layui-icon layui-icon-add-1"></i>  添加规格
+                </button>
+            </div>
+            <div class="layui-form-item">
+                <label for="L_email" class="layui-form-label">
+
+                </label>
+                <div class="layui-input-block" style="background: white" >
+                    <table class="layui-table" lay-skin="line">
+                        <thead>
+                            <tr>
+                                <th>规格值</th>
+                                <th>绑定图片</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spec-value-body">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="L_repass" class="layui-form-label">
+                </label>
+                <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    增加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            nickname: function(value) {
+                if (value.length < 3 || value.length > 30) {
+                    return '昵称必须在3-30个字符之间';
+                }
+            },
+            pass: [/(.+){6,16}$/, '密码必须6到16位'],
+            repass: function(value) {
+                if ($('#L_pass').val() != $('#L_repass').val()) {
+                    return '两次密码不一致';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                console.log(data);
+                //发异步，把数据提交给php
+                $.ajax({
+                    type : 'post',
+                    url  : 'save',
+                    data : data.field,
+                    success : function (result) {
+                        if(result.code == 100){
+                            layer.alert("增加成功", {
+                                    icon: 6
+                                },
+                                function() {
+                                    //关闭当前frame
+                                    xadmin.close();
+
+                                    // 可以对父窗口进行刷新
+                                    xadmin.father_reload();
+                                });
+                        }else{
+                            layer.alert(result.msg,{icon:5});
+                        }
+                    },
+                    error : function (result) {
+                        layer.alert('请求失败！'.msg,{icon:5});
+                    }
+                });
+
+                return false;
+            });
+
+        form.on('select(spec_type)', function(data){
+            if(data.value == 1){
+                $('.spec-img-box').addClass('hid');
+            }else{
+                $('.spec-img-box').removeClass('hid');
+            }
+        });
+
+    });
+
+
+
+
+
+    function closeTr(obj) {
+        $(obj).parent().parent().remove();
+    }
+
+    var indexTr = 0;
+    function addTr() {
+        var imgClass = '';
+        var specType = $('#spec_type').val();
+        if(specType == 1){
+            imgClass = 'hid';
+        }
+
+        indexTr++;
+        var _html = '';
+        _html += '<tr>';
+        _html += '<td><input onchange="changeSpecValue(this,'+indexTr+')" type="text" data-index="'+indexTr+'" name="spec_value_list['+indexTr+'][spec_value]" autocomplete="off" class="layui-input" style="width: 180px"></td>';
+        _html += '<td><div class="spec-img-box '+imgClass+'"><input type="hidden" name="spec_value_list['+indexTr+'][spec_value_alt]" class="form-control" id="spec-value-img-'+indexTr+'" value="">';
+        _html += '<img src="/static/admin/images/default-thumbnail.png" id="spec-value-img-'+indexTr+'-preview" width="35" height="35" style="cursor: pointer"/> ';
+        _html += '<button type="button" class="layui-btn layui-btn-primary" onclick="uploadOneImage(\'图片上传\',\'#spec-value-img-'+indexTr+'\')">选择图片</button></div></td>';
+        _html += '<td><a href="javascript:void(0)" onclick="closeTr(this)"><i class="layui-icon layui-icon-close-fill" style="font-size: 22px"></i></a></td></tr>';
+        $('#spec-value-body').append(_html);
+    }
+
+    function changeSpecValue(obj,index) {
+        var specType = $('#spec_type').val();
+        if(specType == 1){
+            $('#spec-value-img-'+index).val($(obj).val());
+        }
+    }
+
+</script>
+</body>
+
+</html>

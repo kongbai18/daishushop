@@ -1,0 +1,11 @@
+.daishuAddImg{
+    float: left;
+    width: 135px;
+    height: 135px;
+    line-height: 135px;
+    text-align: center;
+    border: 1px solid #e5e5e5;
+    font-size: 26px;
+    color: #fff;
+    cursor: pointer;
+}
