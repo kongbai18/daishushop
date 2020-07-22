@@ -38,6 +38,7 @@ class Admin extends Model
             $size = 10;
         }
 
+
         $list = $this->alias('a')->field('a.*')
             ->leftJoin('admin_role b','a.id = b.admin_id')
             ->where($where)

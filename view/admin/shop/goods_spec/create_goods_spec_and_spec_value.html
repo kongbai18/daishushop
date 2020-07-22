@@ -131,6 +131,12 @@
         form.on('select(spec_type)', function(data){
             if(data.value == 1){
                 $('.spec-img-box').addClass('hid');
+                var specVal = $('#spec-value-body tr');
+                for (var i=0;i<specVal.length;i++){
+                    var valIndex = $('#spec-value-body tr').eq(i).find('input').attr('data-index');
+                    var valIndexVal = $('#spec-value-body tr').eq(i).find('input').val();
+                    $('#spec-value-img-'+valIndex).val(valIndexVal);
+                }
             }else{
                 $('.spec-img-box').removeClass('hid');
             }
